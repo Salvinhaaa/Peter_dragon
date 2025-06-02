@@ -57,7 +57,8 @@ cls
 :MENU1
 echo.                 %b%"═══════════════════════════════════════════════════════════════════════════════"%w%                                       
 echo.                 %p%[%w%1%p%]%w% .RAR     
-echo.                 %p%[%w%2%p%]%w% .ZIP                               
+echo.                 %p%[%w%2%p%]%w% .ZIP  
+echo.                 %p%[%w%3%p%]%w% Legendas                              
 echo.                 %p%[%w%V%p%]%w% Sair
 echo.                 %p%[%w%X%p%]%w% Voltar ao menu
 echo.                 %b%"═══════════════════════════════════════════════════════════════════════════════"%w%
@@ -66,8 +67,41 @@ echo.                 %b%"══════════════════
 set /p input=:
 if /i %input% == 1 goto winrar
 if /i %input% == 2 goto zipado
+if /i %input% == 3 goto Legendas
 if /i %input% == v goto sair
 if /i %input% == x goto bazar
+
+:Legendas
+cls
+set "DEST=C:\FILME_PETER_DRAGON"
+set "RAR=%temp%\Petes.Dragon.2016.720p.BluRay.x264-BLOW.srt"
+set "URL=https://github.com/Salvinhaaa/Peter_dragon/releases/download/movue/Petes.Dragon.2016.720p.BluRay.x264-BLOW.srt"
+
+
+:: Cria a pasta de destino, se não existir
+md "%DEST%" 2>nul
+
+:: Mensagem informativa
+powershell -Command ^
+  "Add-Type -AssemblyName System.Windows.Forms; " ^
+  "[System.Windows.Forms.MessageBox]::Show('Download do ficheiro das legendas.', 'Peter_Dragon Github', [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Information)"
+
+:: Baixa o arquivo .RAR
+echo.
+echo A fazer o dowload dos arquivos .ZIP do GitHub...
+curl -L -o "%RAR%" "%URL%" 
+
+:: Move o .RAR para a pasta de destino
+move /Y "%RAR%" "%DEST%\Petes.Dragon.2016.720p.BluRay.x264-BLOW.srt"
+
+echo.
+echo [OK] Arquivo transferido para: %DEST%\resource.zip
+
+cls
+powershell -Command ^
+  "Add-Type -AssemblyName System.Windows.Forms; " ^
+  "[System.Windows.Forms.MessageBox]::Show('Clicka Ok para ir para o menu para sair.', 'GitHub dowload', [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Information)"
+goto MENU1
 
 :zipado
 cls 
@@ -76,6 +110,7 @@ cls
 set "DEST=C:\FILME_PETER_DRAGON"
 set "RAR=%temp%\resource.zip"
 set "URL=https://github.com/Salvinhaaa/Peter_dragon/releases/download/movue/resource.zip"
+
 
 :: Cria a pasta de destino, se não existir
 md "%DEST%" 2>nul
@@ -88,7 +123,7 @@ powershell -Command ^
 :: Baixa o arquivo .RAR
 echo.
 echo A fazer o dowload dos arquivos .ZIP do GitHub...
-curl -L -o "%RAR%" "%URL%"
+curl -L -o "%RAR%" "%URL%" 
 
 :: Move o .RAR para a pasta de destino
 move /Y "%RAR%" "%DEST%\resource.zip"
